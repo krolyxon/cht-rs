@@ -11,7 +11,7 @@ Get cheatsheets from [cht.sh](https://cht.sh) from your terminal.
   Go to `target/release` directory and run `./cht-rs`
 
 ## cht-rs in action
-[](https:://raw.githubusercontent.com/krolyxon/cht-rs/asset/cht-rs.mp4)
+[](https://raw.githubusercontent.com/krolyxon/cht-rs/master/asset/cht-rs.mp4)
 
 ## License
 This project is licensed under the [`GPLv3 LICENSE`](https://github.com/krolyxon/cht-rs/blob/master/LICENSE)
