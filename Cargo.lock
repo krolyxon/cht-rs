@@ -31,6 +31,7 @@ name = "cht-rs"
 version = "0.1.0"
 dependencies = [
  "dialoguer",
+ "rust_fzf",
 ]
 
 [[package]]
@@ -162,6 +163,12 @@ checksum = "567664f262709473930a4bf9e51bf2ebf3348f2e748ccc50dea20646858f8f29"
 dependencies = [
  "bitflags",
 ]
+
+[[package]]
+name = "rust_fzf"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d11972a669a6e05d8a33af5a2fdec29ae2a3df64361e1237b06d6f974d227c7c"
 
 [[package]]
 name = "rustix"
