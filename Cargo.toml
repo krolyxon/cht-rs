@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 rust_fzf = "0.1.1"
+dialoguer = { version = "0.10.0", features = ["fuzzy-select"] }

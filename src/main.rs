@@ -1,4 +1,6 @@
-use rust_fzf::{self, fzf_select};
+use dialoguer::theme::ColorfulTheme;
+use dialoguer::FuzzySelect;
+use rust_fzf;
 use std::fs;
 use std::io::{stdin, stdout, Write};
 use std::process::{Command, ExitStatus};
@@ -35,19 +37,38 @@ fn main() {
     let mut combined_vec: Vec<String> = languages.clone();
     combined_vec.extend(utils.into_iter());
 
+    let selector: &str = "fzf";
     println!("Please select a language: ");
-    let choice = fzf_select(combined_vec);
-    if choice.is_empty() {
+    let choice: usize;
+    if selector.is_installed() {
+        let fzf_choice = rust_fzf::fzf_select(combined_vec.clone());
+        if let Some(index) = combined_vec.iter().position(|s| *s == fzf_choice) {
+            choice = index;
+        } else {
+            return;
+        }
+    } else {
+        choice = FuzzySelect::with_theme(&ColorfulTheme::default())
+            .with_prompt("Select a language/utility")
+            .default(0)
+            .items(&combined_vec[..])
+            .interact()
+            .unwrap();
+    }
+
+    if combined_vec.get(choice).is_none() {
+        // if combined_vec.get(choice) {
         println!("Please select a Language or a Utility");
         return;
     }
-    print!("Please enter a query for {}: ", &choice);
+
+    print!("Please enter a query for {}: ", &combined_vec[choice]);
     stdout().flush().unwrap();
     stdin()
         .read_line(&mut query)
         .expect("Error reading query from user");
 
-    let url = if languages.contains(&choice) {
+    let url = if languages.contains(&combined_vec[choice]) {
         query = query.replace(" ", "+").trim().parse().unwrap();
         format!("https://cht.sh/{}/{}", choice, query)
     } else {
@@ -60,4 +81,23 @@ fn main() {
         .spawn()
         .expect("failed to start curl");
     let _status: ExitStatus = child.wait().unwrap();
+}
+
+trait Installed {
+    fn is_installed(&self) -> bool;
+}
+
+impl Installed for &str {
+    // Checks if a given command is installed on the system or not.
+    fn is_installed(&self) -> bool {
+        let output = Command::new("which")
+            .arg(&self)
+            .output()
+            .expect("Failed to execute command");
+        if output.status.success() {
+            true
+        } else {
+            false
+        }
+    }
 }
