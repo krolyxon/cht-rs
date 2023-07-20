@@ -1,9 +1,10 @@
+use curl::easy::Easy;
 use dialoguer::theme::ColorfulTheme;
 use dialoguer::FuzzySelect;
 use rust_fzf;
 use std::fs;
 use std::io::{stdin, stdout, Write};
-use std::process::{Command, ExitStatus};
+use std::process::Command;
 
 const BANNER: &str = r#"
     ╔╗   ╔╗
@@ -18,6 +19,7 @@ fn main() {
     let mut query = String::new();
     let languagepath = "./src/languages.txt";
     let utilpath = "./src/utils.txt";
+    let mut easy = Easy::new();
 
     println!("{}", BANNER);
 
@@ -75,12 +77,14 @@ fn main() {
         format!("https://cht.sh/{}~{}", choice, query)
     };
 
-    // let _ = Command::new("xdg-open").arg(url).spawn();
-    let mut child = Command::new("curl")
-        .arg(url)
-        .spawn()
-        .expect("failed to start curl");
-    let _status: ExitStatus = child.wait().unwrap();
+    easy.url(&url).unwrap();
+    easy.write_function(|data| {
+        stdout().write_all(data).unwrap();
+        Ok(data.len())
+    })
+    .unwrap();
+    easy.useragent("curl").unwrap();
+    easy.perform().unwrap();
 }
 
 trait Installed {
