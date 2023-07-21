@@ -195,10 +195,6 @@ impl Installed for &str {
             .arg(&self)
             .output()
             .expect("Failed to execute command");
-        if output.status.success() {
-            true
-        } else {
-            false
-        }
+        output.status.success()
     }
 }
