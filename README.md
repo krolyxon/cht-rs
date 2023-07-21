@@ -1,6 +1,9 @@
 # [`cht-rs`](https://github.com/krolyxon/cht-rs)
 Get cheatsheets from [cht.sh](https://cht.sh) from your terminal.
 
+## Requirements
+- fzf (optional)
+
 ## Installation
 
 ```bash
