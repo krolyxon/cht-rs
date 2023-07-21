@@ -1,7 +1,6 @@
 use curl::easy::Easy;
 use dialoguer::theme::ColorfulTheme;
 use dialoguer::FuzzySelect;
-use rust_fzf;
 use std::io::{stdin, stdout, Write};
 use std::process::Command;
 
@@ -168,7 +167,7 @@ fn main() {
         .expect("Error reading query from user");
 
     let url = if languages.contains(&combined_vec[choice]) {
-        query = query.replace(" ", "+").trim().parse().unwrap();
+        query = query.replace(' ', "+").trim().parse().unwrap();
         format!("https://cht.sh/{}/{}", choice, query)
     } else {
         format!("https://cht.sh/{}~{}", choice, query)
@@ -185,12 +184,12 @@ fn main() {
 }
 
 trait Installed {
-    fn is_installed(&self) -> bool;
+    fn is_installed(self) -> bool;
 }
 
 impl Installed for &str {
     // Checks if a given command is installed on the system or not.
-    fn is_installed(&self) -> bool {
+    fn is_installed(self) -> bool {
         let output = Command::new("which")
             .arg(&self)
             .output()
