@@ -184,14 +184,14 @@ fn main() {
 }
 
 trait Installed {
-    fn is_installed(self) -> bool;
+    fn is_installed(&self) -> bool;
 }
 
 impl Installed for &str {
     // Checks if a given command is installed on the system or not.
-    fn is_installed(self) -> bool {
+    fn is_installed(&self) -> bool {
         let output = Command::new("which")
-            .arg(&self)
+            .arg(self)
             .output()
             .expect("Failed to execute command");
         output.status.success()
